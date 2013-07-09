@@ -25,29 +25,28 @@ end
 
 def list_git_log(dir)
     today = Time.now.strftime("%Y-%m-%d")
-    git_cmd = "git log --stat --since=#{today}"
-    #git_cmd = "git log --stat --since=2013-07-08"
-    email = `git config --global --get user.email`.strip
-
+    name = `git config --global --get user.name`.strip
+    git_cmd = "git log --stat --since=#{today} --author='#{name}'"
+    git_cmd = "git log --stat --since=2013-07-08 --author='#{name}'"
+    puts git_cmd
     out = ""
     Dir.foreach(dir) do |d|
-
         next if d == "." or d == ".."
         t = dir + '/' + d
         next if not File.directory?(t)
         if File.exists?(t + '/.git') and File.directory?(t + '/.git') then
-            #puts "Got #{t}"
-            my = false
+            puts "Got #{t}"
+
             c = ""
             Dir.chdir(t) do |r|
                 ci = `#{git_cmd}`
                 next if ci.empty?
-                #puts ci
+                puts ci
                 ci.each_line do |l|
                     #puts l
                     c = "#{l[0..10]}... > " if l.start_with?("commit")
-                    my = true  if l.start_with?("Author") and l.include?(email)
-                    out = out + c + l and my = false if l.include?("files changed") and my
+
+                    out = out + c + l if l.include?("files changed")
                 end
             end
         end
@@ -57,6 +56,7 @@ end
 
 # print git commit info
 BASE_DIR =['/Users/liubin/bitbucket','/Users/liubin/github']
+#BASE_DIR =['/Users/liubin/github']
 BASE_DIR.each do |dir|
     puts list_git_log(dir)
 end

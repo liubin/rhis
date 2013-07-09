@@ -27,25 +27,24 @@ def list_git_log(dir)
     today = Time.now.strftime("%Y-%m-%d")
     name = `git config --global --get user.name`.strip
     git_cmd = "git log --stat --since='1 day ago' --author='#{name}'"
-    puts git_cmd
+
     out = ""
     Dir.foreach(dir) do |d|
         next if d == "." or d == ".."
         t = dir + '/' + d
         next if not File.directory?(t)
         if File.exists?(t + '/.git') and File.directory?(t + '/.git') then
-            puts "Got #{t}"
 
             c = ""
             Dir.chdir(t) do |r|
                 ci = `#{git_cmd}`
                 next if ci.empty?
-                puts ci
+
                 ci.each_line do |l|
                     #puts l
                     c = "#{l[0..10]}... > " if l.start_with?("commit")
 
-                    out = out + c + l if l.include?("files changed")
+                    out = out + c + l if l.include?("files changed") or l.include?("file changed")
                 end
             end
         end
@@ -55,11 +54,13 @@ end
 
 # print git commit info
 BASE_DIR =['/Users/liubin/bitbucket','/Users/liubin/github']
-#BASE_DIR =['/Users/liubin/github']
+
+puts "git commit data:"
 BASE_DIR.each do |dir|
     puts list_git_log(dir)
 end
 
+puts "\n\nshell command data:"
 # print shell history
 list_his
 

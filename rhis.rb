@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 #encoding: utf-8
+require 'twitter'
 
 def list_his
+    hl = ''
     cmds ={}
     open("/Users/liubin/.command_log") do |file|
       while line = file.gets
@@ -19,8 +21,9 @@ def list_his
 
     cmds = cmds.sort_by {|k,v| v}.reverse
     cmds.each do |cmd|
-        puts "#{cmd[0]}:#{cmd[1]}次，"
+        hl = hl + "#{cmd[0]}:#{cmd[1]}次,"
     end
+    hl
 end
 
 def list_git_log(dir)
@@ -52,15 +55,37 @@ def list_git_log(dir)
     out
 end
 
+Twitter.configure do |config|
+  config.consumer_key = ENV['TWITTER_APP_KEY']
+  config.consumer_secret = ENV['TWITTER_APP_SECRET']
+  config.oauth_token = ENV['TWITTER_TOKEN']
+  config.oauth_token_secret = ENV['TWITTER_TOKEN_SECRET']
+end
+
+
+client = Twitter::Client.new
+
 # print git commit info
 BASE_DIR =['/Users/liubin/bitbucket','/Users/liubin/github']
 
-puts "git commit data:"
+git_log = ""
 BASE_DIR.each do |dir|
-    puts list_git_log(dir)
+    git_log = git_log + list_git_log(dir)
 end
+begin
+    client.update(git_log[0..139])
+rescue Exception => e
+    puts e
+end
+#puts "git commit data:#{git_log}"
 
-puts "\n\nshell command data:"
 # print shell history
-list_his
 
+his_log = list_his
+#puts "\n\nshell command data:#{his_log}"
+begin
+    puts his_log[0..139]
+    client.update(his_log[0..139])
+rescue Exception => e
+    puts e
+end

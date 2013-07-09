@@ -26,8 +26,7 @@ end
 def list_git_log(dir)
     today = Time.now.strftime("%Y-%m-%d")
     name = `git config --global --get user.name`.strip
-    git_cmd = "git log --stat --since=#{today} --author='#{name}'"
-    git_cmd = "git log --stat --since=2013-07-08 --author='#{name}'"
+    git_cmd = "git log --stat --since='1 day ago' --author='#{name}'"
     puts git_cmd
     out = ""
     Dir.foreach(dir) do |d|

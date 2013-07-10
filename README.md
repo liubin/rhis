@@ -46,7 +46,11 @@ It's **weibo_2** ,not weibo2 !!
 
 ### run script
 
-    ./rhis [t]
+    ./rhis [t|w]
+
+without arguments ,it will print out to console.if w is given ,will post weibo status.
+
+if t is given ,will post twitter status.
 
 if **t** is given, status will be posted to twitter
 

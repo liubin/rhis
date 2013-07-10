@@ -31,6 +31,7 @@ It's **weibo_2** ,not weibo2 !!
     export HIS_FILE=~/.command_log
 
 **git base directories**
+
     export GIT_BASE_PATH=/Users/liubin/bitbucket:/Users/liubin/github
 
 **log all command to ~/.command_log**
@@ -42,6 +43,7 @@ It's **weibo_2** ,not weibo2 !!
     fi
 
 **setup backup path**
+
     export HIS_FILE_BAK_PATH=~/his_log
 
 ### run script

@@ -94,10 +94,10 @@ ARGV.each do |v|
 end
 
 # print git commit info
-GIT_BASE_DIR =['/Users/liubin/bitbucket','/Users/liubin/github']
 
+git_base = if ENV['GIT_BASE_PATH'] then ENV['GIT_BASE_PATH'].split(":")else [] end
 git_log = ""
-GIT_BASE_DIR.each do |dir|
+git_base.each do |dir|
     git_log = git_log + list_git_log(dir)
 end
 puts "git commit data:#{git_log}"
@@ -110,7 +110,8 @@ his_log = list_his
 puts "\n\nshell command data:#{his_log}"
 
 # sleep for sina weibo.fuck!
-sleep(4)
+sleep(4) if flag_w
+
 t his_log[0..139] if flag_t and not his_log.empty?
 w his_log[0..139] if flag_w and not his_log.empty?
 

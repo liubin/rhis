@@ -30,6 +30,9 @@ It's **weibo_2** ,not weibo2 !!
 
     export HIS_FILE=~/.command_log
 
+**git base directories**
+    export GIT_BASE_PATH=/Users/liubin/bitbucket:/Users/liubin/github
+
 **log all command to ~/.command_log**
 
     if [ -n "${BASH_VERSION}" ]; then
@@ -37,6 +40,9 @@ It's **weibo_2** ,not weibo2 !!
     printf '%s\\n' \"\$(date '+%Y-%m-%dT%H:%M:%S%z')\
      \$(tty) \${BASH_COMMAND}\" 2>/dev/null >> ${HIS_FILE}" DEBUG
     fi
+
+**setup backup path**
+    export HIS_FILE_BAK_PATH=~/his_log
 
 ### run script
 
@@ -52,11 +58,11 @@ create it if not exist:
     sudo touch /etc/rc.local.shutdown
 
 edit it **rc.local.shutdown** will like this:
+or use the file in this repo.
 
     #!/bin/sh -e
-    /Users/liubin/github/rhis/rhis.rb t
-    mv /Users/liubin/.command_log /Users/liubin/his_log/command_log`date +%Y%m%d%H%M%S`
-    sleep 5
+    /Users/liubin/github/rhis/rhis.rb w t
+    mv ${HIS_FILE} ${HIS_FILE_BAK_PATH}/command_log`date +%Y%m%d%H%M%S`
 
 *his_log* is backup folder for command history.create it if not exist.
 

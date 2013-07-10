@@ -1,0 +1,4 @@
+#!/bin/sh -e
+
+/Users/liubin/github/rhis/rhis.rb w t
+mv ${HIS_FILE} ${HIS_FILE_BAK_PATH}/command_log`date +%Y%m%d%H%M%S`

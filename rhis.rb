@@ -5,7 +5,7 @@ require 'twitter'
 def list_his
     hl = ''
     cmds ={}
-    open("/Users/liubin/.command_log") do |file|
+    open("#{ENV['HIS_FILE']}") do |file|
       while line = file.gets
         cmd = line.split(' ')
         next if cmd.size < 3
@@ -45,7 +45,7 @@ def list_git_log(dir)
 
                 ci.each_line do |l|
                     #puts l
-                    c = "#{l[0..10]}... > " if l.start_with?("commit")
+                    c = "#{l[0..15]}... > " if l.start_with?("commit")
 
                     out = out + c + l if l.include?("files changed") or l.include?("file changed")
                 end
@@ -55,37 +55,43 @@ def list_git_log(dir)
     out
 end
 
-Twitter.configure do |config|
-  config.consumer_key = ENV['TWITTER_APP_KEY']
-  config.consumer_secret = ENV['TWITTER_APP_SECRET']
-  config.oauth_token = ENV['TWITTER_TOKEN']
-  config.oauth_token_secret = ENV['TWITTER_TOKEN_SECRET']
+def t(status)
+    Twitter.configure do |config|
+      config.consumer_key = ENV['TWITTER_APP_KEY']
+      config.consumer_secret = ENV['TWITTER_APP_SECRET']
+      config.oauth_token = ENV['TWITTER_TOKEN']
+      config.oauth_token_secret = ENV['TWITTER_TOKEN_SECRET']
+    end
+
+    client = Twitter::Client.new
+
+    begin
+        client.update(status)
+    rescue Exception => e
+        puts e
+    end
+
 end
 
-
-client = Twitter::Client.new
+flag_t = false
+ARGV.each do |v|
+    flag_t = true if v == 't'
+end
 
 # print git commit info
-BASE_DIR =['/Users/liubin/bitbucket','/Users/liubin/github']
+GIT_BASE_DIR =['/Users/liubin/bitbucket','/Users/liubin/github']
 
 git_log = ""
-BASE_DIR.each do |dir|
+GIT_BASE_DIR.each do |dir|
     git_log = git_log + list_git_log(dir)
 end
-begin
-    client.update(git_log[0..139])
-rescue Exception => e
-    puts e
-end
-#puts "git commit data:#{git_log}"
+puts "git commit data:#{git_log}"
+t git_log[0..139] if flag_t and not git_log.empty?
 
 # print shell history
 
 his_log = list_his
-#puts "\n\nshell command data:#{his_log}"
-begin
-    puts his_log[0..139]
-    client.update(his_log[0..139])
-rescue Exception => e
-    puts e
-end
+puts "\n\nshell command data:#{his_log}"
+
+t his_log[0..139] if flag_t and not his_log.empty?
+

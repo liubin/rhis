@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 #encoding: utf-8
 require 'twitter'
+require 'weibo_2'
 
 def list_his
     hl = ''
@@ -73,9 +74,23 @@ def t(status)
 
 end
 
+def w(status)
+    WeiboOAuth2::Config.api_key = ENV['WEIBO_APP_KEY']
+    WeiboOAuth2::Config.api_secret = ENV['WEIBO_APP_SECRET']
+    client = WeiboOAuth2::Client.new
+    client.get_token_from_hash({:access_token=>ENV['WEIBO_ACCESS_TOKEN'],:expires_at=>86400})
+    begin
+        client.statuses.update(status)
+    rescue Exception => e
+        puts e
+    end
+end
+
 flag_t = false
+flag_w = false
 ARGV.each do |v|
     flag_t = true if v == 't'
+    flag_w = true if v == 'w'
 end
 
 # print git commit info
@@ -87,11 +102,15 @@ GIT_BASE_DIR.each do |dir|
 end
 puts "git commit data:#{git_log}"
 t git_log[0..139] if flag_t and not git_log.empty?
+w git_log[0..139] if flag_w and not git_log.empty?
 
 # print shell history
 
 his_log = list_his
 puts "\n\nshell command data:#{his_log}"
 
+# sleep for sina weibo.fuck!
+sleep(4)
 t his_log[0..139] if flag_t and not his_log.empty?
+w his_log[0..139] if flag_w and not his_log.empty?
 

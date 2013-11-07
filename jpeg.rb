@@ -6,11 +6,11 @@ include Magick
 LINE_HIGHT = 20
 CHAR_WIDTH = 8
 
-def make_png(strs)
+def make_img(strs)
     width = strs.sort{ |x,y| x.length <=> y.length}.last.length * CHAR_WIDTH + 20
-    puts "#{width}"
-    height = strs.length * LINE_HIGHT + 20
-    puts "#{height}"
+    #puts "#{width}"
+    height = strs.length * LINE_HIGHT + 50
+    #puts "#{height}"
 
     file_name = "/tmp/#{Time.now.to_i}.jpg"
     image = Image.new(width, height)

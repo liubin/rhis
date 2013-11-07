@@ -21,7 +21,7 @@ def list_his
     end
 
     cmds = cmds.sort_by {|k,v| v}.reverse
-    cmds.each do |cmd|
+    cmds[0..10].each do |cmd|
         hl = hl + "#{cmd[0]}:#{cmd[1]}次,"
     end
     hl
@@ -102,7 +102,7 @@ git_base.each do |dir|
 end
 puts "git commit data:#{git_log}"
 t git_log[0..139] if flag_t and not git_log.empty?
-w git_log[0..139] if flag_w and not git_log.empty?
+w git_log[0..200] if flag_w and not git_log.empty?
 
 # print shell history
 
@@ -113,5 +113,5 @@ puts "\n\nshell command data:#{his_log}"
 sleep(4) if flag_w
 
 t his_log[0..139] if flag_t and not his_log.empty?
-w his_log[0..139] if flag_w and not his_log.empty?
+w his_log[0..200] if flag_w and not his_log.empty?
 

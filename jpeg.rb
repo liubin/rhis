@@ -3,11 +3,11 @@ include Magick
 
 
 
-LINE_HIGHT = 20
-CHAR_WIDTH = 8
+LINE_HIGHT = 32
+CHAR_WIDTH = 15
 
 def make_img(strs)
-    width = strs.sort{ |x,y| x.length <=> y.length}.last.length * CHAR_WIDTH + 20
+    width = strs.sort{ |x,y| x.length <=> y.length}.last.length * CHAR_WIDTH + 50
     #puts "#{width}"
     height = strs.length * LINE_HIGHT + 50
     #puts "#{height}"
@@ -20,7 +20,7 @@ def make_img(strs)
 
         text.annotate(image, 0, 0, 10, 10 + LINE_HIGHT * i , v) do
           text.gravity = NorthWestGravity
-          self.pointsize = 16
+          self.pointsize = 32
           self.font_family = "Arial"
           self.font_weight = BoldWeight
           self.stroke = "none"

@@ -26,7 +26,7 @@ def list_git_log(dir)
 
                 ci.each_line do |l|
                     #puts l
-                    c = "#{l[0..15]}... > " if l.start_with?("commit")
+                    c = "#{l[0..12]}... " if l.start_with?("commit")
 
                     out << (c + l.delete("\n")) if l.include?("files changed") or l.include?("file changed")
                 end

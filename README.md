@@ -77,4 +77,19 @@ make it executable:
     sudo chmod a+x  /etc/rc.local.shutdown
 
 
+### to run git_log_2_weibo.rb ,you need to install rmagick
+
+  on my osx , the step will be:
+
+  brew install imagemagick
+
+  gem install rmagick
+
+  wget ftp://ftp.imagemagick.org/pub/ImageMagick/delegates/ghostscript-fonts-std-8.11.tar.gz
+
+  tar zxvf ghostscript-fonts-std-8.11.tar.gz
+
+  sudo mkdir -p /usr/local/share/ghostscript/fonts
+
+  sudo cp fonts/* /usr/local/share/ghostscript/fonts/
 

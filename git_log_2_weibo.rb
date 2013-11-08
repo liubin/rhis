@@ -55,7 +55,7 @@ git_log = []
 git_base.each do |dir|
     git_log = git_log + list_git_log(dir)
 end
-git_log.unshift("").unshift("git log for #{Time.now.strftime "%Y-%m-%d"}")
+git_log.unshift("").unshift("git log for last 24 hours")
 
 # call to generate a jpeg file under /tmp
 fn = make_img(git_log)

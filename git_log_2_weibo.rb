@@ -5,7 +5,6 @@ require 'weibo_2'
 
 require './jpeg.rb'
 
-
 # get all git coomits for one day ago
 def list_git_log(dir)
 
@@ -63,6 +62,6 @@ text = ARGV.shift || "无聊闲的"
 fn = make_img(git_log)
 
 # post status to weibo
-w File.new(fn, text)
+w(File.new(fn), text)
 
 

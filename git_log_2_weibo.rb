@@ -36,13 +36,13 @@ def list_git_log(dir)
     out
 end
 
-def w(file)
+def w(file,text)
     WeiboOAuth2::Config.api_key = ENV['WEIBO_APP_KEY']
     WeiboOAuth2::Config.api_secret = ENV['WEIBO_APP_SECRET']
     client = WeiboOAuth2::Client.new
     client.get_token_from_hash({:access_token=>ENV['WEIBO_ACCESS_TOKEN'],:expires_at=>86400})
     begin
-        client.statuses.upload("无聊闲的", file, {})
+        client.statuses.upload(text, file, {})
     rescue Exception => e
         puts e
     end
@@ -58,9 +58,11 @@ end
 git_log.unshift("").unshift("git log for last 24 hours")
 
 # call to generate a jpeg file under /tmp
+text = ARGV.shift || "无聊闲的"
+
 fn = make_img(git_log)
 
 # post status to weibo
-w File.new(fn)
+w File.new(fn, text)
 
 

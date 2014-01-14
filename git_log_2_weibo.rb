@@ -8,7 +8,7 @@ require './jpeg.rb'
 # get all git coomits for one day ago
 def list_git_log(dir)
 
-    name = `git config --global --get user.name`.strip
+    name = `git config --global --get user.email`.strip
     git_cmd = "git log --stat --since='1 day ago' --author='#{name}'"
 
     out = []
